@@ -5,7 +5,7 @@ function player:load()
     self.y = 100
     self.width = 58
     self.height = 92
-    self.scale = 0.4
+    self.scale = 0.33
     local idleFront = love.graphics.newImage("sprites/newIdleFront.png")
     self.spriteSheets = {
 

@@ -5,7 +5,7 @@ function love.load()
     love.window.setMode(624, 624)
     love.graphics.setDefaultFilter("nearest", "nearest")
     world = wf.newWorld(0, 0)
-    scale = 3
+    scale = 3.5
 
     map:load()
     player:load()

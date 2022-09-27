@@ -7,6 +7,7 @@ function love.load()
     world = wf.newWorld(0, 0)
     scale = 3.5
 
+    _G.viviMap = loadTiledMap("viviMap")
     map:load()
     player:load()
     playerCamera:load()

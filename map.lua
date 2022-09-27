@@ -1,8 +1,7 @@
 map = {}
 
 function map:load()
-    self.currentMap = sti("maps/viviMap.lua")
-
+    self.currentMap = sti("viviMap.lua")
 
     self.collisions = {}
     if self.currentMap.layers["grassCollision"] then
@@ -19,6 +18,5 @@ function map:update(dt)
 end
 
 function map:draw()
-    self.currentMap:drawLayer(self.currentMap.layers["grass2"])
-    self.currentMap:drawLayer(self.currentMap.layers["grass"])
+    _G.viviMap:draw()
 end

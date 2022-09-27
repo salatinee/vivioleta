@@ -1,8 +1,8 @@
 player = {}
 
 function player:load()
-    self.x = 100
-    self.y = 100
+    self.x = 176
+    self.y = 256
     self.width = 58
     self.height = 92
     self.scale = 0.33
@@ -22,10 +22,10 @@ function player:load()
 
     self.animations = {
         idle = {
-            front = anim8.newAnimation(self.spriteSheets.idle.grid('1-2', 1), 0.4),
-            back = anim8.newAnimation(self.spriteSheets.idle.grid('1-2', 2), 0.4),
-            right = anim8.newAnimation(self.spriteSheets.idle.grid('1-2', 3), 0.4),
-            left = anim8.newAnimation(self.spriteSheets.idle.grid('1-2', 4), 0.4)
+            front = anim8.newAnimation(self.spriteSheets.idle.grid('1-2', 1), 0.75),
+            back = anim8.newAnimation(self.spriteSheets.idle.grid('1-2', 2), 0.75),
+            right = anim8.newAnimation(self.spriteSheets.idle.grid('1-2', 3), 0.75),
+            left = anim8.newAnimation(self.spriteSheets.idle.grid('1-2', 4), 0.75)
         },
 
         walking = {

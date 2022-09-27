@@ -4,6 +4,7 @@ function requireAll()
     camera = require("libraries/camera")
     anim8 = require("libraries/anim8")
     require("map")
+    require("tiledmap")
     require("player")
     require("playerCamera")
 end

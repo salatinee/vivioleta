@@ -7,4 +7,7 @@ function requireAll()
     require("tiledmap")
     require("player")
     require("playerCamera")
+    require("npcs/NPC")
+    require("npcs/npcs")
+    require("npcs/Cow")
 end

@@ -11,11 +11,13 @@ function love.load()
     map:load()
     player:load()
     playerCamera:load()
+    npcs:load()
 end
 
 function love.update(dt)
     map:update(dt)
     world:update(dt)
+    npcs:update(dt)
     player:update(dt)
     playerCamera:update(dt)
 end
@@ -25,6 +27,7 @@ function love.draw()
         love.graphics.scale(scale)
         map:draw()
         player:draw()
+        npcs:draw()
      -- world:draw()
     playerCamera:detach()
 end

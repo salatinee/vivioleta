@@ -14,7 +14,7 @@ function map:load()
 end
 
 function map:update(dt)
-
+    _G.viviMap:update(dt)
 end
 
 function map:draw()

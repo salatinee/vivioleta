@@ -5,6 +5,7 @@ function map:load()
     
     self.collisions = {}
     self.collisionClass = world:addCollisionClass("Collision")
+    self.playerCollisionClass = world:addCollisionClass("Player")
     self.npcCollisionClass = world:addCollisionClass("NPC")
     if self.currentMap.layers["grassCollision"] then
         for i, obj in pairs(self.currentMap.layers["grassCollision"].objects) do

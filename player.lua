@@ -96,6 +96,7 @@ function player:move(dt)
     end
 
     self.currentAnimation:update(dt)
+    self.collider:setCollisionClass("Player")
     self.collider:setLinearVelocity(vx, vy)
 end
 

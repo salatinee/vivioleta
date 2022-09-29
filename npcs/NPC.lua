@@ -106,8 +106,8 @@ function NPC:update(dt)
     end
 
     self:move(dt)
+    self:updateCollider(dt)
     if self.isMoving then
-        self:updateCollider(dt)
         self:checkCollision()
     end
 end
@@ -131,7 +131,7 @@ function NPC:move(dt)
         self.currentSpriteSheet = self.spriteSheets.idle.sprite
         self.currentAnimation = self.animations.idle[self.lastDirection]
     end
-    
+
     self.collider:setLinearVelocity(vx, vy)
     self.currentAnimation:update(dt)
 end

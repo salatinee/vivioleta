@@ -6,7 +6,7 @@ local idleGrid = anim8.newGrid(width, height, idleImage:getWidth(), idleImage:ge
 local walkingImage = love.graphics.newImage("sprites/npcs/Cow/Walking.png")
 walkingImage:setFilter("nearest", "nearest")
 local walkingGrid = anim8.newGrid(width, height, walkingImage:getWidth(), walkingImage:getHeight())
-local limit = 25
+local limit = 50
 
 
 Cow = NPC:new()

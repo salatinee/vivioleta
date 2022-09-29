@@ -107,6 +107,7 @@ function NPC:update(dt)
 
     self:move(dt)
     self:updateCollider(dt)
+    self:checkLimit()
     if self.isMoving then
         self:checkCollision()
     end

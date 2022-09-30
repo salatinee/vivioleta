@@ -22,6 +22,12 @@ function love.update(dt)
     playerCamera:update(dt)
 end
 
+function love.keypressed(key, scancode, isrepeat)
+    if key == "e" then
+        player:interactWithNPC()
+    end
+end
+
 function love.draw()
     playerCamera:attach()
         love.graphics.scale(scale)

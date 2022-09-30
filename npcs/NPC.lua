@@ -91,7 +91,7 @@ function NPC:checkCollision()
     end
 end
 
-function NPC:update(dt)
+function NPC:updateNPC(dt)
     self.timer = self.timer + dt
     if self.timer > self.maxTimer then
         local falseTrue = {false, true}
@@ -157,11 +157,19 @@ function NPC:checkLimit()
     self.collider:setPosition(self.x, self.y)
 end
 
+function NPC:getCollider()
+    return self.collider
+end
+
 function NPC:updateCollider(dt)
     self.x = self.collider:getX()
     self.y = self.collider:getY()
 end
 
-function NPC:draw()
+function NPC:drawNPC()
     self.currentAnimation:draw(self.currentSpriteSheet, self.x, self.y, 0, self.scale, self.scale, self.width / 2, self.height / 2)
+end
+
+function NPC:interactWithPlayer()
+    error("This function must be overriden")
 end

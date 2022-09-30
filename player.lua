@@ -36,6 +36,13 @@ function player:load()
         }
     }
     self.lastDirection = "front"
+    -- interactionCollider is a collider so that it detects Player and NPC interaction, a bit ahead of the player
+    self.interaction = {
+        width = 10,
+        height = 10
+    }
+    self.interactionCollider = world:newRectangleCollider(self.x + self.width * self.scale / 2, self.y + self.height * self.scale / 2 + self.interaction.height * 5/3, self.interaction.width, self.interaction.height)
+    self.interactionCollider:setCollisionClass("PlayerInteraction")
     self.currentAnimation = self.animations.idle.front
     self.currentSpriteSheet = self.spriteSheets.idle.sprite
     self.speed = 75
@@ -58,6 +65,7 @@ function player:move(dt)
         vy = -self.speed
         self.currentAnimation = self.animations.walking.back
         self.lastDirection = "back"
+        self.interactionCollider:setPosition(self.x + self.width * self.scale / 2, self.y + self.height * self.scale / 2 - self.interaction.height * 5/3)
         keysPressed = keysPressed + 1
     end
 
@@ -65,6 +73,7 @@ function player:move(dt)
         vx = -self.speed
         self.currentAnimation = self.animations.walking.left
         self.lastDirection = "left"
+        self.interactionCollider:setPosition(self.x + self.width * self.scale / 2 - self.interaction.width * 5/3, self.y + self.height * self.scale / 2)
         keysPressed = keysPressed + 1
     end
 
@@ -72,6 +81,7 @@ function player:move(dt)
         vy = self.speed
         self.currentAnimation = self.animations.walking.front
         self.lastDirection = "front"
+        self.interactionCollider:setPosition(self.x + self.width * self.scale / 2, self.y + self.height * self.scale / 2 + self.interaction.height * 5/3)
         keysPressed = keysPressed + 1
     end
 
@@ -79,6 +89,7 @@ function player:move(dt)
         vx = self.speed
         self.currentAnimation = self.animations.walking.right
         self.lastDirection = "right"
+        self.interactionCollider:setPosition(self.x + self.width * self.scale / 2 + self.interaction.width * 5/3, self.y + self.height * self.scale / 2)
         keysPressed = keysPressed + 1
     end
 
@@ -98,12 +109,28 @@ function player:move(dt)
     self.currentAnimation:update(dt)
     self.collider:setCollisionClass("Player")
     self.collider:setLinearVelocity(vx, vy)
+    self.interactionCollider:setLinearVelocity(vx, vy)
+end
+
+function player:checkInteractionWithNPC()
+    local colliders = world:queryRectangleArea(self.interactionCollider:getX() - self.interaction.width / 2, self.interactionCollider:getY() - self.interaction.height / 2, self.interaction.width, self.interaction.height, {"NPC"})
+    if #colliders > 0 then
+        return colliders[1]:getObject()
+    end
+end
+
+function player:interactWithNPC()
+    local npc = self:checkInteractionWithNPC()
+    if npc ~= nil then
+        npc:setIsInteracting(true)
+    end
 end
 
 function player:updateCollider()
     self.x = self.collider:getX() - self.width * self.scale / 2
     self.y = self.collider:getY() - self.height * self.scale / 2
 end
+
 
 function player:getDimensions()
     return self.x * scale, self.y * scale

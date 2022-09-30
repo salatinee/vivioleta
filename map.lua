@@ -4,9 +4,10 @@ function map:load()
     self.currentMap = sti("viviMap.lua")
     
     self.collisions = {}
+    self.npcCollisionClass = world:addCollisionClass("NPC")
     self.collisionClass = world:addCollisionClass("Collision")
     self.playerCollisionClass = world:addCollisionClass("Player")
-    self.npcCollisionClass = world:addCollisionClass("NPC")
+    self.playerInteractionClass = world:addCollisionClass("PlayerInteraction", {ignores = {"NPC", "Player", "Collision"}})
     if self.currentMap.layers["grassCollision"] then
         for i, obj in pairs(self.currentMap.layers["grassCollision"].objects) do
             local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)

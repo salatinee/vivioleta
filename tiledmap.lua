@@ -4,6 +4,8 @@ function loadTiledMap(path)
     map.quads = loadQuads(map.tilesets)
     map.images = loadImages(map.tilesets)
     map.animatedTiles = loadAnimatedTiles(map.tilesets)
+    map.width = map.width * map.tilewidth
+    map.height = map.height * map.tileheight
 
     map.frame = 0
     map.timer = 0.0
@@ -16,6 +18,14 @@ function loadTiledMap(path)
         end
 
         self.timer = self.timer + dt
+    end
+
+    function map:getWidth()
+        return self.width
+    end
+
+    function map:getHeight()
+        return self.height
     end
 
     function map:draw()

@@ -47,16 +47,24 @@ function NPC:load(options)
     self.lastDirection = directions[math.random(1, #directions)]
     self.collider = world:newRectangleCollider(options.x, options.y, options.width * options.scale, options.height * options.scale)
 
+    self.interactionFont = love.graphics.newFont("fonts/8bitOperatorPlus8-Regular.ttf", 64)
+    self.interactionFont:setFilter("nearest", "nearest")
+    self.interactionTextScale = 0.125 -- 1/8
+    self.interactionTimer = 0.0
+    self.interactionMaxTimer = 1
+    self.isInteracting = false
+
     -- NPC's limitation from going too far from its original position
     self.limits = {
         up = options.limits.up or options.height / 2,
-        down = options.limits.down or _G.mapHeight - options.height / 2,
+        down = options.limits.down or _G.viviMap:getHeight() - options.height / 2,
         left = options.limits.left or options.width / 2,
-        right = options.limits.right or _G.mapWidth - options.width / 2,
+        right = options.limits.right or _G.viviMap:getWidth() - options.width / 2,
     }
     
     self.collider:setFixedRotation(true)
     self.collider:setCollisionClass("NPC")
+    self.collider:setObject(self)
     self.currentAnimation = self.animations.idle[self.lastDirection]
     self.currentSpriteSheet = self.spriteSheets.idle.sprite
     self.speed = options.speed or 50
@@ -65,6 +73,43 @@ function NPC:load(options)
     local falseTrue = {false, true}
     self.isMoving = falseTrue[math.random(2)]
     self.maxTimer = math.random(0, 5) + math.random()
+end
+
+function NPC.createOptions(name, scale, x, y, width, height, speed, idleImage, idleGrid, walkingImage, walkingGrid, limit)
+    local options = {}
+    options.name = name
+    options.scale = scale
+    options.x = x
+    options.y = y
+    options.speed = speed or 25
+    options.width = width
+    options.height = height
+    options.idle = {
+        image = idleImage,
+        grid = idleGrid
+    }
+
+    options.walking = {
+        image = walkingImage,
+        grid = walkingGrid
+    }
+
+    options.limits = {
+        up = limit,
+        down = limit,
+        right = limit,
+        left = limit
+    }
+
+    return options
+end
+
+function NPC:getIsInteracting()
+    return self.isInteracting
+end
+
+function NPC:setIsInteracting(isInteracting)
+    self.isInteracting = isInteracting
 end
 
 function NPC:checkCollision()
@@ -91,6 +136,11 @@ function NPC:checkCollision()
     end
 end
 
+function NPC:update(dt)
+    -- generally this function is overriden for other drawing purposes besides character movement
+    self:updateNPC(dt)
+end
+
 function NPC:updateNPC(dt)
     self.timer = self.timer + dt
     if self.timer > self.maxTimer then
@@ -110,6 +160,14 @@ function NPC:updateNPC(dt)
     self:checkLimit()
     if self.isMoving then
         self:checkCollision()
+    end
+
+    if self.isInteracting then
+        self.interactionTimer = self.interactionTimer + dt
+        if self.interactionTimer >= self.interactionMaxTimer then
+            self.isInteracting = false
+            self.interactionTimer = 0.0
+        end
     end
 end
 
@@ -164,6 +222,23 @@ end
 function NPC:updateCollider(dt)
     self.x = self.collider:getX()
     self.y = self.collider:getY()
+end
+
+function NPC:draw()
+    -- generally this function is overriden for other drawing purposes besides character drawing
+    self:drawNPC()
+    if self.isInteracting then
+        self:interactWithPlayer()
+    end
+end
+
+function NPC:printMessage(text)
+    love.graphics.setFont(self.interactionFont)
+    local textWidth = self.interactionFont:getWidth(text)
+    local textHeight = self.interactionFont:getHeight(text)
+    local textX = self.x + self.width * self.scale / 2 - textWidth * self.interactionTextScale
+    local textY = self.y - self.height * self.scale / 2 - textHeight * self.interactionTextScale
+    love.graphics.print(text, textX, textY, nil, self.interactionTextScale, self.interactionTextScale)
 end
 
 function NPC:drawNPC()

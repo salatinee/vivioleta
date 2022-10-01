@@ -119,6 +119,10 @@ function player:checkInteractionWithNPC()
     end
 end
 
+function player:getPosition()
+    return self.x, self.y
+end
+
 function player:interactWithNPC()
     local npc = self:checkInteractionWithNPC()
     if npc ~= nil then
@@ -133,7 +137,9 @@ end
 
 
 function player:getDimensions()
-    return self.x * scale, self.y * scale
+    local x = (self.x + self.width  * self.scale / 2) * scale
+    local y = (self.y) * scale
+    return x, y 
 end
 
 function player:draw()

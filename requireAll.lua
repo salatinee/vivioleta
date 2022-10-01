@@ -10,4 +10,5 @@ function requireAll()
     require("npcs/NPC")
     require("npcs/npcs")
     require("npcs/Cow")
+    require("npcs/Aurora")
 end

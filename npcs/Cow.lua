@@ -10,52 +10,22 @@ function Cow:new(x, y, limit)
     walkingImage:setFilter("nearest", "nearest")
     local walkingGrid = anim8.newGrid(width, height, walkingImage:getWidth(), walkingImage:getHeight())
     local newCow = NPC:new()
-    newCow.interactionFont = love.graphics.newFont("fonts/8bitOperatorPlus8-Regular.ttf", 8)
-    newCow.interactionFont:setFilter("nearest", "nearest")
-    newCow.interactionTimer = 0.0
-    newCow.interactionMaxTimer = 1
-    newCow.isInteracting = false
-    newCow.options = {
-        scale = 1,
-        name = "Cow",
-        x = x,
-        y = y,
-        speed = 25,
-        width = width,
-        height = height,
+    newCow.options = NPC.createOptions("Cow", 1, x, y, width, height, 25, idleImage, idleGrid, walkingImage, walkingGrid, limit)
+
+    newCow.options.animations = {
         idle = {
-            image = idleImage,
-            grid = idleGrid
-        },
-    
-        walking = {
-            image = walkingImage,
-            grid = walkingGrid
+            front = anim8.newAnimation(idleGrid('1-3', 1), 0.75),
+            back = anim8.newAnimation(idleGrid('1-3', 2), 0.75),
+            left = anim8.newAnimation(idleGrid('1-3', 2), 0.75),
+            right = anim8.newAnimation(idleGrid('1-3', 1), 0.75)
         },
         
-        animations = {
-            idle = {
-                front = anim8.newAnimation(idleGrid('1-3', 1), 0.75),
-                back = anim8.newAnimation(idleGrid('1-3', 2), 0.75),
-                left = anim8.newAnimation(idleGrid('1-3', 2), 0.75),
-                right = anim8.newAnimation(idleGrid('1-3', 1), 0.75)
-            },
-            
-            walking = {
-                front = anim8.newAnimation(walkingGrid('1-3', 1), 0.3),
-                back = anim8.newAnimation(walkingGrid('1-3', 2), 0.3),
-                left = anim8.newAnimation(walkingGrid('1-3', 2), 0.3),
-                right = anim8.newAnimation(walkingGrid('1-3', 1), 0.3)
-            }
-        },
-    
-        limits = {
-            up = limit,
-            down = limit,
-            left = limit,
-            right = limit
+        walking = {
+            front = anim8.newAnimation(walkingGrid('1-3', 1), 0.3),
+            back = anim8.newAnimation(walkingGrid('1-3', 2), 0.3),
+            left = anim8.newAnimation(walkingGrid('1-3', 2), 0.3),
+            right = anim8.newAnimation(walkingGrid('1-3', 1), 0.3)
         }
-    
     }
     self.__index = self
     setmetatable(newCow, self)
@@ -73,26 +43,6 @@ function Cow:update(dt)
     end
 end
 
-function Cow:getIsInteracting()
-    return self.isInteracting
-end
-
-function Cow:setIsInteracting(isInteracting)
-    self.isInteracting = isInteracting
-end
-
 function Cow:interactWithPlayer()
-    -- draw text above cow
-    love.graphics.setFont(self.interactionFont)
-    local text = "moo!"
-    local textWidth = self.interactionFont:getWidth(text)
-    local textHeight = self.interactionFont:getHeight(text)
-    love.graphics.print(text, self.x + self.width / 2 - textWidth, self.y - self.height / 2 - 15 + textHeight / 2, nil, self.scale, self.scale)
-end
-
-function Cow:draw()
-    self:drawNPC()
-    if self.isInteracting then
-        self:interactWithPlayer()
-    end
+    self:printMessage("moo!")
 end

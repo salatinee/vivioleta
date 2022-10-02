@@ -136,7 +136,7 @@ function player:updateCollider()
 end
 
 
-function player:getDimensions()
+function player:getPosition()
     local x = (self.x + self.width  * self.scale / 2) * scale
     local y = (self.y) * scale
     return x, y 

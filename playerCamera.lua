@@ -1,7 +1,8 @@
 playerCamera = {}
 
 function playerCamera:load()
-    self.cam = camera(player:getDimensions())
+    self.cam = camera(player:getPosition())
+    self.cam.smoother = camera.smooth.damped(6)
 end
 
 function playerCamera:update(dt)
@@ -10,7 +11,12 @@ function playerCamera:update(dt)
 end
 
 function playerCamera:lookAtPlayer()
-    self.cam:lookAt(player:getDimensions())
+    local x, y = player:getPosition()
+    dx, dy = x - self.cam.x, y - self.cam.y
+    if math.abs(dx) > 5 or math.abs(dy) > 5 then
+        newX, newY = self.cam.smoother(dx, dy)
+        self.cam:move(newX, newY)
+    end
 end
 
 function playerCamera:stopAtBorders()

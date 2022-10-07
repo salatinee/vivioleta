@@ -11,4 +11,7 @@ function requireAll()
     require("npcs/npcs")
     require("npcs/Cow")
     require("npcs/Aurora")
+    require("Inventory/Inventory")
+    require("Inventory/Item")
+    require("Inventory/hud")
 end

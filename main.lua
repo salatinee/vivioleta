@@ -14,6 +14,7 @@ function love.load()
     player:load()
     playerCamera:load()
     npcs:load()
+    Inventory:load()
 end
 
 function love.update(dt)
@@ -47,4 +48,5 @@ function love.draw()
         player:draw()
      -- world:draw()
     playerCamera:detach()
+    hud:draw()
 end

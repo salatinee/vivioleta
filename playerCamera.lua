@@ -1,7 +1,7 @@
 playerCamera = {}
 
 function playerCamera:load()
-    self.cam = camera(player:getPosition())
+    self.cam = camera(player:getPositionScaled())
     self.cam.smoother = camera.smooth.damped(6)
 end
 
@@ -11,7 +11,7 @@ function playerCamera:update(dt)
 end
 
 function playerCamera:lookAtPlayer()
-    local x, y = player:getPosition()
+    local x, y = player:getPositionScaled()
     dx, dy = x - self.cam.x, y - self.cam.y
     if math.abs(dx) > 5 or math.abs(dy) > 5 then
         newX, newY = self.cam.smoother(dx, dy)

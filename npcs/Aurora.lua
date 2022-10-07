@@ -49,23 +49,18 @@ function Aurora:update(dt)
 end
 
 function Aurora:facePlayer()
-    local playerX, playerY = player:getPosition()
-    local newDirection = self.lastDirection
-    local xDifference = math.abs(playerX - self.x)
-    local yDifference = math.abs(playerY - self.y)
-    if xDifference > yDifference then
-        if playerX > self.x then
-            newDirection = "right"
-        else
-            newDirection = "left"
-        end
+    local angle = self:angleToPlayer()
+    local _, playerY = player:getCenteredPosition()
+
+    if angle > 0 and angle < math.pi / 2 then
+        self.lastDirection = "right"
+    elseif angle > 2 * math.pi / 3 then
+        self.lastDirection = "left"
+    elseif angle > math.pi / 2 and angle < math.pi and self.y <= playerY then
+        self.lastDirection = "front"
     else
-        if playerY > self.y then
-            newDirection = "front"
-        else
-            newDirection = "back"
-        end
+        self.lastDirection = "back"
     end
 
-    self.lastDirection = newDirection
 end
+

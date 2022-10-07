@@ -2,10 +2,12 @@ player = {}
 
 function player:load()
     self.x = 176
-    self.y = 256
+    self.y = 256 
     self.width = 58
     self.height = 92
     self.scale = 0.33
+    self.centeredX = self.x + self.width * self.scale / 2
+    self.centeredY = self.y + self.height * self.scale / 2
     local idle = love.graphics.newImage("sprites/newIdle.png")
     local walking = love.graphics.newImage("sprites/newWalking.png")
     self.spriteSheets = {
@@ -119,8 +121,16 @@ function player:checkInteractionWithNPC()
     end
 end
 
+function player:getCenteredPosition()
+    return self.centeredX, self.centeredY
+end
+
 function player:getPosition()
     return self.x, self.y
+end
+
+function player:getDimensions()
+    return self.width, self.height
 end
 
 function player:interactWithNPC()
@@ -133,10 +143,12 @@ end
 function player:updateCollider()
     self.x = self.collider:getX() - self.width * self.scale / 2
     self.y = self.collider:getY() - self.height * self.scale / 2
+    self.centeredX = self.x + self.width * self.scale / 2
+    self.centeredY = self.y + self.height * self.scale / 2
 end
 
 
-function player:getPosition()
+function player:getPositionScaled()
     local x = (self.x + self.width  * self.scale / 2) * scale
     local y = (self.y) * scale
     return x, y 

@@ -257,3 +257,10 @@ end
 function NPC:interactWithPlayer()
     error("This function must be overriden")
 end
+
+function NPC:angleToPlayer()
+    local playerX, playerY = player:getCenteredPosition()
+    local hypothenuse = math.sqrt(math.pow((playerX - self.x), 2) + math.pow((playerY - self.y), 2))
+    local angle = math.acos((playerX - self.x) / hypothenuse)
+    return angle
+end

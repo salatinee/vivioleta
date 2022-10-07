@@ -1,8 +1,8 @@
 Cow = NPC:new()
 
 function Cow:new(x, y, limit)
-    local width = 27
-    local height = 17
+    local width = 32
+    local height = 18
     local idleImage = love.graphics.newImage("sprites/npcs/Cow/Idle.png")
     idleImage:setFilter("nearest", "nearest")
     local idleGrid = anim8.newGrid(width, height, idleImage:getWidth(), idleImage:getHeight())
@@ -11,20 +11,20 @@ function Cow:new(x, y, limit)
     local walkingGrid = anim8.newGrid(width, height, walkingImage:getWidth(), walkingImage:getHeight())
     local newCow = NPC:new()
     newCow.options = NPC.createOptions("Cow", 1, x, y, width, height, 25, idleImage, idleGrid, walkingImage, walkingGrid, limit)
-
+    newCow.options.scale = 1.1
     newCow.options.animations = {
         idle = {
-            front = anim8.newAnimation(idleGrid('1-3', 1), 0.75),
-            back = anim8.newAnimation(idleGrid('1-3', 2), 0.75),
-            left = anim8.newAnimation(idleGrid('1-3', 2), 0.75),
-            right = anim8.newAnimation(idleGrid('1-3', 1), 0.75)
+            front = anim8.newAnimation(idleGrid('1-2', 1), 0.75),
+            back = anim8.newAnimation(idleGrid('1-2', 2), 0.75),
+            left = anim8.newAnimation(idleGrid('1-2', 2), 0.75),
+            right = anim8.newAnimation(idleGrid('1-2', 1), 0.75)
         },
         
         walking = {
-            front = anim8.newAnimation(walkingGrid('1-3', 1), 0.3),
-            back = anim8.newAnimation(walkingGrid('1-3', 2), 0.3),
-            left = anim8.newAnimation(walkingGrid('1-3', 2), 0.3),
-            right = anim8.newAnimation(walkingGrid('1-3', 1), 0.3)
+            front = anim8.newAnimation(walkingGrid('1-4', 1), 0.3),
+            back = anim8.newAnimation(walkingGrid('1-4', 2), 0.3),
+            left = anim8.newAnimation(walkingGrid('1-4', 2), 0.3),
+            right = anim8.newAnimation(walkingGrid('1-4', 1), 0.3)
         }
     }
     self.__index = self

@@ -104,6 +104,12 @@ function NPC.createOptions(name, scale, x, y, width, height, speed, idleImage, i
     return options
 end
 
+function NPC:getObject(name)
+    if self.name == name then
+        return self
+    end
+end
+
 function NPC:getIsInteracting()
     return self.isInteracting
 end
@@ -239,6 +245,9 @@ function NPC:printMessage(text)
     local textX = self.x + self.width * self.scale / 2 - textWidth * self.interactionTextScale
     local textY = self.y - self.height * self.scale / 2 - textHeight * self.interactionTextScale
     love.graphics.print(text, textX, textY, nil, self.interactionTextScale, self.interactionTextScale)
+    
+    -- default font
+    love.graphics.setNewFont(12)
 end
 
 function NPC:drawNPC()

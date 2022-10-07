@@ -15,6 +15,7 @@ function love.load()
     playerCamera:load()
     npcs:load()
     Inventory:load()
+    hud:load()
 end
 
 function love.update(dt)
@@ -23,6 +24,7 @@ function love.update(dt)
     npcs:update(dt)
     player:update(dt)
     playerCamera:update(dt)
+    hud:update(dt)
 end
 
 function love.keypressed(key, scancode, isrepeat)

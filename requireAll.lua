@@ -14,4 +14,5 @@ function requireAll()
     require("Inventory/Inventory")
     require("Inventory/Item")
     require("Inventory/hud")
+    require("utils")
 end

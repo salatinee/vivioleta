@@ -30,6 +30,10 @@ function Inventory:updateItemCount()
     self.itemsCount = #self.items
 end
 
+function Inventory:getItem(i)
+    return self.items[i]
+end
+
 function Inventory:getItems()
     return self.items
 end

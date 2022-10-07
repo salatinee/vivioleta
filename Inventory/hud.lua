@@ -22,7 +22,6 @@ function hud:updateScaling()
 end
 
 function hud:draw()
-    -- creates a horizontal grid of inventory slots and draws them in the horizontal center of the screen
     local inventorySlotX = (love.graphics.getWidth() / 2) - ((self.inventorySlot.width + self.inventorySlot.padding) * Inventory:getItemsLimit() / 2)
     local inventorySlotY = love.graphics.getHeight() - self.inventorySlot.height - self.inventorySlot.padding
     for i = 1, Inventory:getItemsLimit() do

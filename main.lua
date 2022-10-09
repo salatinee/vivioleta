@@ -15,7 +15,7 @@ function love.load()
     playerCamera:load()
     npcs:load()
     Inventory:load()
-    hud:load()
+    inventoryHud:load()
 end
 
 function love.update(dt)
@@ -24,7 +24,13 @@ function love.update(dt)
     npcs:update(dt)
     player:update(dt)
     playerCamera:update(dt)
-    hud:update(dt)
+    inventoryHud:update(dt)
+end
+
+function love.mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        player:changeUsingItemState()
+    end
 end
 
 function love.keypressed(key, scancode, isrepeat)
@@ -50,5 +56,5 @@ function love.draw()
         player:draw()
      -- world:draw()
     playerCamera:detach()
-    hud:draw()
+    inventoryHud:draw()
 end

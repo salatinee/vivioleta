@@ -13,6 +13,6 @@ function requireAll()
     require("npcs/Aurora")
     require("Inventory/Inventory")
     require("Inventory/Item")
-    require("Inventory/hud")
+    require("Inventory/inventoryHud")
     require("utils")
 end

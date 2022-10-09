@@ -10,6 +10,7 @@ function player:load()
     self.centeredY = self.y + self.height * self.scale / 2
     local idle = love.graphics.newImage("sprites/newIdle.png")
     local walking = love.graphics.newImage("sprites/newWalking.png")
+    local usingItem = love.graphics.newImage("sprites/usingItem.png")
     self.spriteSheets = {
         idle = {
             sprite = idle,
@@ -19,6 +20,11 @@ function player:load()
         walking = {
             sprite = walking,
             grid = anim8.newGrid(self.width, self.height, walking:getWidth(), walking:getHeight()),
+        },
+
+        usingItem = {
+            sprite = usingItem,
+            grid = anim8.newGrid(self.width, self.height, usingItem:getWidth(), usingItem:getHeight()),
         }
     }
 
@@ -35,6 +41,13 @@ function player:load()
             back = anim8.newAnimation(self.spriteSheets.walking.grid('1-8', 2), 0.1),
             right = anim8.newAnimation(self.spriteSheets.walking.grid('1-8', 3), 0.1),
             left = anim8.newAnimation(self.spriteSheets.walking.grid('1-8', 4), 0.1)
+        },
+
+        usingItem = {
+            front = anim8.newAnimation(self.spriteSheets.usingItem.grid('1-2', 1), 0.3),
+            back = anim8.newAnimation(self.spriteSheets.usingItem.grid('1-2', 2), 0.3),
+            right = anim8.newAnimation(self.spriteSheets.usingItem.grid('1-2', 3), 0.3),
+            left = anim8.newAnimation(self.spriteSheets.usingItem.grid('1-2', 4), 0.3)
         }
     }
     self.lastDirection = "front"
@@ -50,11 +63,43 @@ function player:load()
     self.speed = 75
     self.collider = world:newRectangleCollider(self.x, self.y, self.width * self.scale, self.height * self.scale)
     self.collider:setFixedRotation(true)
+    self.collider:setCollisionClass("Player")
+    self.usingItem = false
+    self.usingItemTimer = 0.0
+    self.usingItemMaxTimer = self.animations.usingItem.front.totalDuration
 end
 
 function player:update(dt)
-    self:move(dt)
+    self:animate(dt)
     self:updateCollider()
+    if self.usingItem then
+        self.usingItemTimer = self.usingItemTimer + dt
+        if self.usingItemTimer >= self.usingItemMaxTimer then
+            self:changeUsingItemState()
+            self.usingItemTimer = 0.0
+        end
+    end
+end
+
+function player:animate(dt)
+    if not self.usingItem then
+        self:move(dt)
+
+        local vx, vy = self.collider:getLinearVelocity()
+        if vx ~= 0 or vy ~= 0 then
+            isMoving = true
+            self.currentSpriteSheet = self.spriteSheets.walking.sprite
+        else
+            self.currentSpriteSheet = self.spriteSheets.idle.sprite
+            self.currentAnimation = self.animations.idle[self.lastDirection]
+        end
+    else
+        self.currentSpriteSheet = self.spriteSheets.usingItem.sprite
+        self.currentAnimation = self.animations.usingItem[self.lastDirection]
+        self:setCollidersVelocity(0, 0)
+    end
+    
+    self.currentAnimation:update(dt)
 end
 
 function player:move(dt)
@@ -62,7 +107,6 @@ function player:move(dt)
     local vy = 0
     local isMoving = false
     local keysPressed = 0
-
     if love.keyboard.isDown("w") then
         vy = -self.speed
         self.currentAnimation = self.animations.walking.back
@@ -108,10 +152,16 @@ function player:move(dt)
         self.currentAnimation = self.animations.idle[self.lastDirection]
     end
 
-    self.currentAnimation:update(dt)
-    self.collider:setCollisionClass("Player")
+    self:setCollidersVelocity(vx, vy)
+end
+
+function player:setCollidersVelocity(vx, vy)
     self.collider:setLinearVelocity(vx, vy)
     self.interactionCollider:setLinearVelocity(vx, vy)
+end
+
+function player:changeUsingItemState()
+    self.usingItem = not self.usingItem
 end
 
 function player:checkInteractionWithNPC()

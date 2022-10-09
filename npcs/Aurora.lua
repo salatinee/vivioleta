@@ -56,7 +56,7 @@ function Aurora:facePlayer()
         self.lastDirection = "right"
     elseif angle > 2 * math.pi / 3 then
         self.lastDirection = "left"
-    elseif angle > math.pi / 2 and angle < math.pi and self.y <= playerY then
+    elseif self.y <= playerY then
         self.lastDirection = "front"
     else
         self.lastDirection = "back"

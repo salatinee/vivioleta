@@ -171,6 +171,10 @@ function player:checkInteractionWithNPC()
     end
 end
 
+function player:getLastDirection()
+    return self.lastDirection
+end
+
 function player:getCenteredPosition()
     return self.centeredX, self.centeredY
 end

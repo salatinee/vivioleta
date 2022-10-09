@@ -1,14 +1,21 @@
 Item = {}
 itemTypes = {"weapon", "tool", "ingredient"}
 
-function Item:new(name, value, image, scale, newItemType)
+function Item:new(name, value, icon, sprite, newItemType, scale)
     local newItem = {}
+
+    -- position must be set later
+    newItem.x = nil
+    newItem.y = nil
+
     newItem.name = name
     newItem.value = value
-    newItem.image = image
+    newItem.icon = icon
+    newItem.sprite = sprite
     newItem.width = image:getWidth() * scale
     newItem.height = image:getHeight() * scale
-    newItem.scale = scale
+    newItem.scale = scale or 1
+    newItem.rotation = 0
 
     local foundType = false
     for _, itemType in ipairs(itemTypes) do
@@ -22,13 +29,20 @@ function Item:new(name, value, image, scale, newItemType)
         error("Invalid item type: " .. newItemType)
     end
 
+    newItem.directions = {
+        front = 1,
+        back = 2,
+        right = 3,
+        left = 4
+    }
+    
     self.__index = self
     setmetatable(newItem, self)
     return newItem
 end
 
-function Item:draw(x, y)
-    love.graphics.draw(self.image, x, y, 0, self.scale)
+function Item:draw()
+    love.graphics.draw(self.image, self.x, self.y, self.rotation, self.scale)
 end
 
 function Item:getName()

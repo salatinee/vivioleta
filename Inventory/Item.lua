@@ -28,13 +28,6 @@ function Item:new(name, value, icon, sprite, newItemType, scale)
     if not foundType then
         error("Invalid item type: " .. newItemType)
     end
-
-    newItem.directions = {
-        front = 1,
-        back = 2,
-        right = 3,
-        left = 4
-    }
     
     self.__index = self
     setmetatable(newItem, self)

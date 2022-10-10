@@ -6,6 +6,7 @@ function Inventory:load()
     self.items = {}
     self.itemsCount = #self.items
     self.itemsLimit = 10
+    self.currentItem = 1
 
 end
 
@@ -66,5 +67,9 @@ function Inventory:swapItemPosition(item, newPosition)
         self.items[oldPosition] = itemToSwap
         self.items[newPosition] = item
     end
+end
+
+function Inventory:getCurrentItem()
+    return self.items[self.currentItem]
 end
 

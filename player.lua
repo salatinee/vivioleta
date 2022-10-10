@@ -11,6 +11,7 @@ function player:load()
     local idle = love.graphics.newImage("sprites/newIdle.png")
     local walking = love.graphics.newImage("sprites/newWalking.png")
     local usingItem = love.graphics.newImage("sprites/usingItem.png")
+    local usingItem2 = love.graphics.newImage("sprites/usingItem2.png")
     self.spriteSheets = {
         idle = {
             sprite = idle,
@@ -25,7 +26,12 @@ function player:load()
         usingItem = {
             sprite = usingItem,
             grid = anim8.newGrid(self.width, self.height, usingItem:getWidth(), usingItem:getHeight()),
-        }
+        },
+
+        usingItem2 = {
+            sprite = usingItem2,
+            grid = anim8.newGrid(self.width, self.height, usingItem2:getWidth(), usingItem2:getHeight()),
+        },
     }
 
     self.animations = {
@@ -48,6 +54,13 @@ function player:load()
             back = anim8.newAnimation(self.spriteSheets.usingItem.grid('1-2', 2), 0.3),
             right = anim8.newAnimation(self.spriteSheets.usingItem.grid('1-2', 3), 0.3),
             left = anim8.newAnimation(self.spriteSheets.usingItem.grid('1-2', 4), 0.3)
+        },
+
+        usingItem2 = {
+            front = anim8.newAnimation(self.spriteSheets.usingItem2.grid('1-2', 1), 0.3),
+            back = anim8.newAnimation(self.spriteSheets.usingItem2.grid('1-2', 2), 0.3),
+            right = anim8.newAnimation(self.spriteSheets.usingItem2.grid('1-2', 3), 0.3),
+            left = anim8.newAnimation(self.spriteSheets.usingItem2.grid('1-2', 4), 0.3)
         }
     }
     self.lastDirection = "front"
@@ -84,7 +97,8 @@ end
 function player:animate(dt)
     if not self.usingItem then
         self:move(dt)
-
+        self.currentAnimation2 = nil
+        self.currentSpriteSheet2 = nil
         local vx, vy = self.collider:getLinearVelocity()
         if vx ~= 0 or vy ~= 0 then
             isMoving = true
@@ -96,10 +110,16 @@ function player:animate(dt)
     else
         self.currentSpriteSheet = self.spriteSheets.usingItem.sprite
         self.currentAnimation = self.animations.usingItem[self.lastDirection]
+        self.currentSpriteSheet2 = self.spriteSheets.usingItem2.sprite
+        self.currentAnimation2 = self.animations.usingItem2[self.lastDirection]
         self:setCollidersVelocity(0, 0)
     end
     
     self.currentAnimation:update(dt)
+
+    if self.currentAnimation2 ~= nil then
+        self.currentAnimation2:update(dt)
+    end
 end
 
 function player:move(dt)
@@ -209,5 +229,10 @@ function player:getPositionScaled()
 end
 
 function player:draw()
-    self.currentAnimation:draw(self.currentSpriteSheet, self.x, self.y, nil, self.scale, self.scale)
+    if self.usingItem then
+        self.currentAnimation2:draw(self.currentSpriteSheet2, self.x, self.y, nil, self.scale)
+        local currentItem = Inventory:getCurrentItem()
+        -- currentItem:draw()
+    end
+    self.currentAnimation:draw(self.currentSpriteSheet, self.x, self.y, nil, self.scale)
 end

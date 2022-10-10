@@ -232,7 +232,9 @@ function player:draw()
     if self.usingItem then
         self.currentAnimation2:draw(self.currentSpriteSheet2, self.x, self.y, nil, self.scale)
         local currentItem = Inventory:getCurrentItem()
-        -- currentItem:draw()
+        if currentItem then
+            currentItem:draw()
+        end
     end
     self.currentAnimation:draw(self.currentSpriteSheet, self.x, self.y, nil, self.scale)
 end

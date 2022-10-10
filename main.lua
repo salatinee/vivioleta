@@ -30,6 +30,10 @@ end
 function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
         player:changeUsingItemState()
+        local currentItem = Inventory:getCurrentItem()
+        if currentItem then
+            currentItem:use()
+        end
     end
 end
 

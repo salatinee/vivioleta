@@ -23,6 +23,7 @@ function Item:new(options)
         newItem.itemWidth = options.itemWidth
         newItem.itemHeight = options.itemHeight
         newItem.rotation = 0
+        newItem.animating = false
         newItem.beingDragged = false
         local foundType = false
         for _, itemType in ipairs(itemTypes) do
@@ -54,6 +55,10 @@ end
 
 function Item:getIndex()
     return self.index
+end
+
+function Item:getAnimating()
+    return self.animating
 end
 
 function Item:setIndex(index)

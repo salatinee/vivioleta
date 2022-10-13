@@ -19,7 +19,6 @@ function Pickaxe:load()
     self.animationTimer = 0
     self.animationMaxTimer = player:getUsingItemTimer()
     self.animationMaxFrameTimer = self.animationMaxTimer / self.animationFrames
-    self.animating = false
     self.animations = {
         front = anim8.newAnimation(self.grid('1-2', 1), self.animationMaxFrameTimer),
         back = anim8.newAnimation(self.grid('1-2', 2), self.animationMaxFrameTimer),

@@ -46,8 +46,10 @@ function love.mousepressed(x, y, button, istouch, presses)
         if not gotItem then
             local currentItem = Inventory:getItemSelected()
             if currentItem ~= nil then
-                player:changeUsingItemState()
-                currentItem:use()
+                if not currentItem:getAnimating() then
+                    player:changeUsingItemState()
+                    currentItem:use()
+                end
             end
         end
     end

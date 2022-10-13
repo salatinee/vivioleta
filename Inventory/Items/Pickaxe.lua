@@ -41,8 +41,6 @@ function Pickaxe:new()
 end
 
 function Pickaxe:animate(dt)
-
-    self.currentAnimation = self.animations[self.lastDirection]
     self.animationTimer = self.animationTimer + dt
     if self.animationTimer > self.animationMaxTimer then
         self.animationTimer = 0
@@ -54,14 +52,16 @@ function Pickaxe:animate(dt)
 end
 
 function Pickaxe:update(dt)
+    self:updateIndex()
     if self.animating then
         self:animate(dt)
     end
+    self.lastDirection = player:getLastDirection()
+    self.currentAnimation = self.animations[self.lastDirection]
 end
 
 function Pickaxe:draw()
     if self.animating then
-        self.lastDirection = player:getLastDirection()
         local playerScale = player:getScale()
         local playerX, playerY = player:getPosition()
         local playerSprite = player:getCurrentSpriteSheet()

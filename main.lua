@@ -26,15 +26,29 @@ function love.update(dt)
     player:update(dt)
     playerCamera:update(dt)
     inventoryHud:update(dt)
-    Items:update(dt)
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
-        player:changeUsingItemState()
-        local currentItem = Inventory:getItemSelected()
-        if currentItem ~= nil then
-            currentItem:use()
+        local gotItem = false
+        for i = 1, Inventory:getItemsLimit() do
+            local inventorySlot = inventoryHud:getInventorySlot(i)
+            local mouse = {x = x, y = y, width = 1, height = 1}
+            if checkCollision(mouse, inventorySlot) then
+                Inventory:setItemSelectedIndex(i)
+                local item = Inventory:getItem(i)
+                if item ~= nil then     
+                    item:setBeingDragged(true)
+                    gotItem = true
+                end
+            end
+        end
+        if not gotItem then
+            local currentItem = Inventory:getItemSelected()
+            if currentItem ~= nil then
+                player:changeUsingItemState()
+                currentItem:use()
+            end
         end
     end
 end
@@ -55,6 +69,12 @@ function love.keypressed(key, scancode, isrepeat)
     if key == "f1" then
         fullscreen = not fullscreen
         love.window.setFullscreen(fullscreen)
+    end
+
+    for i = 0, Inventory:getItemsLimit() - 1 do
+        if key == tostring(i) then
+            Inventory:setItemSelectedIndex(i)
+        end
     end
 end
 

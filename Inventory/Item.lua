@@ -8,6 +8,8 @@ function Item:new(options)
         -- position must be set later
         newItem.x = nil
         newItem.y = nil
+        newItem.xIcon = nil
+        newItem.yIcon = nil
 
         newItem.scale = options.scale or 1
         newItem.name = options.name
@@ -21,7 +23,7 @@ function Item:new(options)
         newItem.itemWidth = options.itemWidth
         newItem.itemHeight = options.itemHeight
         newItem.rotation = 0
-
+        newItem.beingDragged = false
         local foundType = false
         for _, itemType in ipairs(itemTypes) do
             if options.type == itemType then
@@ -40,8 +42,44 @@ function Item:new(options)
     return newItem
 end
 
-function Item:drawIcon(x, y, scale)
-    love.graphics.draw(self.icon, x, y, nil, scale)
+function Item:updateIndex()
+    self.index = nil
+    for i, item in ipairs(Inventory:getItems()) do
+        if item.name == self.name then
+            self.index = i
+            break
+        end
+    end
+end
+
+function Item:getIndex()
+    return self.index
+end
+
+function Item:setIndex(index)
+    self.index = index
+end
+
+function Item:setIconDimensions(x, y)
+    self.xIcon = x or self.xIcon
+    self.yIcon = y or self.yIcon
+end
+
+function Item:updateIconDragging(x, y)
+    self.xIcon = x - self.itemWidth / 2
+    self.yIcon = y - self.itemHeight / 2
+end
+
+function Item:getBeingDragged()
+    return self.beingDragged
+end
+
+function Item:setBeingDragged(bool)
+    self.beingDragged = bool
+end
+
+function Item:drawIcon(scale)
+    love.graphics.draw(self.icon, self.xIcon, self.yIcon, nil, scale)
 end
 
 function Item:drawSprite(x, y, scale)

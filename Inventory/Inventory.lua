@@ -3,13 +3,17 @@
 Inventory = {}
 
 function Inventory:load()
-    self.items = {
-        Pickaxe:new()
-    }
-    self.itemsCount = #self.items
     self.itemsLimit = 10
     self.itemSelectedIndex = 1
 
+    self.items = {}
+    for i = 1, self.itemsLimit do
+        self.items[i] = nil
+    end
+
+    self.items[1] = Pickaxe:new()
+
+    self.itemsCount = #self.items
 end
 
 function Inventory:changeItemSelected(intensity)
@@ -22,20 +26,17 @@ function Inventory:changeItemSelected(intensity)
     end
 end
 
-function Inventory:addItem(item)
+function Inventory:addItem(item, i)
     if self.itemsCount < self.itemsLimit then
-        table.insert(self.items, item)
+        local i = i or self.itemsCount + 1
+        table.insert(self.items, i, item)
         self:updateItemCount()
     end
 end
 
-function Inventory:removeItem(item)
-    for i, v in ipairs(self.items) do
-        if v == item then
-            table.remove(self.items, i)
-        end
-    end
-
+function Inventory:removeItem(item, index)
+    local index = index or self:getItemIndex(item)
+    table.remove(self.items, index)
     self:updateItemCount()
 end
 
@@ -68,21 +69,27 @@ function Inventory:getItemPosition(item)
 end
 
 function Inventory:swapItemPosition(item, newPosition)
-    local oldPosition = self:getItemPosition(item)
-    if oldPosition ~= newPosition then
+    self.items[item:getIndex()], self.items[newPosition] = self.items[newPosition], self.items[item:getIndex()]
+end
 
-        local itemToSwap = nil
-        if self.items[newPosition] ~= nil then
-            local itemToSwap = self.items[newPosition]
+function Inventory:getItemIndex(item)
+    for i, v in ipairs(self.items) do
+        if v == item then
+            return i
         end
-        
-        self.items[oldPosition] = itemToSwap
-        self.items[newPosition] = item
     end
 end
 
 function Inventory:getItemSelected()
     return self.items[self.itemSelectedIndex]
+end
+
+function Inventory:setItemSelectedIndex(i)
+    if i == 0 then
+        self.itemSelectedIndex = self.itemsLimit
+        return
+    end
+    self.itemSelectedIndex = i
 end
 
 function Inventory:getItemSelectedIndex()

@@ -82,14 +82,21 @@ function player:load()
     self.usingItemMaxTimer = self.animations.usingItem.front.totalDuration
 end
 
+function player:getUsingItemTimer()
+    return self.usingItemMaxTimer
+end
+
 function player:update(dt)
     self:animate(dt)
     self:updateCollider()
     if self.usingItem then
         self.usingItemTimer = self.usingItemTimer + dt
         if self.usingItemTimer >= self.usingItemMaxTimer then
+            self.currentAnimation = self.animations.idle[self.lastDirection]
+            self.currentSpriteSheet = self.spriteSheets.idle.sprite
             self:changeUsingItemState()
             self.usingItemTimer = 0.0
+            self.currentAnimation:gotoFrame(1)
         end
     end
 end
@@ -99,14 +106,6 @@ function player:animate(dt)
         self:move(dt)
         self.currentAnimation2 = nil
         self.currentSpriteSheet2 = nil
-        local vx, vy = self.collider:getLinearVelocity()
-        if vx ~= 0 or vy ~= 0 then
-            isMoving = true
-            self.currentSpriteSheet = self.spriteSheets.walking.sprite
-        else
-            self.currentSpriteSheet = self.spriteSheets.idle.sprite
-            self.currentAnimation = self.animations.idle[self.lastDirection]
-        end
     else
         self.currentSpriteSheet = self.spriteSheets.usingItem.sprite
         self.currentAnimation = self.animations.usingItem[self.lastDirection]
@@ -222,6 +221,14 @@ function player:updateCollider()
 end
 
 
+function player:getScale()
+    return self.scale
+end
+
+function player:getCurrentSpriteSheet()
+    return self.currentSpriteSheet
+end
+
 function player:getPositionScaled()
     local x = (self.x + self.width  * self.scale / 2) * scale
     local y = (self.y) * scale
@@ -231,9 +238,15 @@ end
 function player:draw()
     if self.usingItem then
         self.currentAnimation2:draw(self.currentSpriteSheet2, self.x, self.y, nil, self.scale)
-        local currentItem = Inventory:getCurrentItem()
-        if currentItem then
-            currentItem:draw()
+        local currentItem = Inventory:getItemSelected()
+        if currentItem ~= nil then
+            if self.lastDirection ~= "front" then
+                currentItem:draw()
+            else
+                self.currentAnimation:draw(self.currentSpriteSheet, self.x, self.y, nil, self.scale)
+                currentItem:draw()
+                return
+            end
         end
     end
     self.currentAnimation:draw(self.currentSpriteSheet, self.x, self.y, nil, self.scale)

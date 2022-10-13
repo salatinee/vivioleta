@@ -3,11 +3,23 @@
 Inventory = {}
 
 function Inventory:load()
-    self.items = {}
+    self.items = {
+        Pickaxe:new()
+    }
     self.itemsCount = #self.items
     self.itemsLimit = 10
-    self.currentItem = 1
+    self.itemSelectedIndex = 1
 
+end
+
+function Inventory:changeItemSelected(intensity)
+    intensity = -intensity
+    self.itemSelectedIndex = self.itemSelectedIndex + intensity
+    if self.itemSelectedIndex > self.itemsLimit then
+        self.itemSelectedIndex = self.itemSelectedIndex - self.itemsLimit
+    elseif self.itemSelectedIndex < 1 then
+        self.itemSelectedIndex = self.itemsLimit - self.itemSelectedIndex
+    end
 end
 
 function Inventory:addItem(item)
@@ -69,7 +81,11 @@ function Inventory:swapItemPosition(item, newPosition)
     end
 end
 
-function Inventory:getCurrentItem()
-    return self.items[self.currentItem]
+function Inventory:getItemSelected()
+    return self.items[self.itemSelectedIndex]
+end
+
+function Inventory:getItemSelectedIndex()
+    return self.itemSelectedIndex
 end
 

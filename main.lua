@@ -16,6 +16,7 @@ function love.load()
     npcs:load()
     Inventory:load()
     inventoryHud:load()
+    Items:load()
 end
 
 function love.update(dt)
@@ -25,16 +26,21 @@ function love.update(dt)
     player:update(dt)
     playerCamera:update(dt)
     inventoryHud:update(dt)
+    Items:update(dt)
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
         player:changeUsingItemState()
-        local currentItem = Inventory:getCurrentItem()
-        if currentItem then
+        local currentItem = Inventory:getItemSelected()
+        if currentItem ~= nil then
             currentItem:use()
         end
     end
+end
+
+function love.wheelmoved(x, y)
+    Inventory:changeItemSelected(y)
 end
 
 function love.keypressed(key, scancode, isrepeat)

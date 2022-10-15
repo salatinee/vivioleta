@@ -18,12 +18,23 @@ function loadTiledMap(path)
         self.collisionClass = world:addCollisionClass("Collision")
         self.playerCollisionClass = world:addCollisionClass("Player")
         self.playerInteractionClass = world:addCollisionClass("PlayerInteraction", {ignores = {"NPC", "Player", "Collision"}})
-        if self.layers["grassCollision"] then
-            for i, obj in pairs(self.layers["Collisions"].objects) do
-                local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
-                collider:setType("static")
-                table.insert(self.collisions, collider)
-                collider:setCollisionClass("Collision")
+        for _, layer in ipairs(self.layers) do
+            if layer.name == "Collisions" then
+                for _, obj in pairs(layer.objects) do
+                    local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
+                    collider:setType("static")
+                    table.insert(self.collisions, collider)
+                    collider:setCollisionClass("Collision")
+                end
+            end
+
+            if layer.name == "Trees" then
+                for _, obj in pairs(layer.objects) do
+                    local tree = Tree:new()
+                    tree:setPosition(obj.x, obj.y)
+                    tree:newCollider(obj.x, obj.y)
+                    entities:addEntity(tree)
+                end
             end
         end
     end

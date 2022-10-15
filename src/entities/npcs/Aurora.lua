@@ -1,4 +1,5 @@
-Aurora = NPC:new()
+Aurora = {}
+setmetatable(Aurora, { __index = NPC })
 
 function Aurora:new(x, y, limit)
     local width = 17

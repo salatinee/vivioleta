@@ -1,4 +1,5 @@
-Cow = NPC:new()
+Cow = {}
+setmetatable(Cow, { __index = NPC })
 
 function Cow:new(x, y, limit)
     local width = 32

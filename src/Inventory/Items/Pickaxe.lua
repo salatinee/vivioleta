@@ -1,4 +1,4 @@
-local options = {
+local defaultOptions = {
     name = "Pickaxe",
     width = 116,
     height = 92,
@@ -11,7 +11,9 @@ local options = {
     scale = 1,
 }
 
-Pickaxe = Item:new(options)
+Pickaxe = {}
+
+setmetatable(Pickaxe, { __index = Item })
 
 function Pickaxe:load()
     self.grid = anim8.newGrid(self.width, self.height, self.sprite:getWidth(), self.sprite:getHeight())
@@ -31,8 +33,8 @@ function Pickaxe:load()
 end
 
 
-function Pickaxe:new()
-
+function Pickaxe:new(options)
+    options = options or defaultOptions
     local newPickaxe = Item:new(options)
     self.__index = self
     setmetatable(newPickaxe, self)

@@ -1,7 +1,8 @@
 NPC = {}
+setmetatable(NPC, { __index = Entity })
 
 function NPC:new()
-    local newNPC = {}
+    local newNPC = Entity:new()
     self.__index = self
     setmetatable(newNPC, self)
     return newNPC

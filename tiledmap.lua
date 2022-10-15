@@ -11,6 +11,23 @@ function loadTiledMap(path)
     map.timer = 0.0
     map.maxTimer = 0.1
 
+    function map:load()
+        
+        self.collisions = {}
+        self.npcCollisionClass = world:addCollisionClass("NPC")
+        self.collisionClass = world:addCollisionClass("Collision")
+        self.playerCollisionClass = world:addCollisionClass("Player")
+        self.playerInteractionClass = world:addCollisionClass("PlayerInteraction", {ignores = {"NPC", "Player", "Collision"}})
+        if self.layers["grassCollision"] then
+            for i, obj in pairs(self.layers["Collisions"].objects) do
+                local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
+                collider:setType("static")
+                table.insert(self.collisions, collider)
+                collider:setCollisionClass("Collision")
+            end
+        end
+    end
+
     function map:update(dt)
         if self.timer > self.maxTimer then
             self.frame = self.frame + 1
@@ -20,12 +37,24 @@ function loadTiledMap(path)
         self.timer = self.timer + dt
     end
 
+    function map:getTileWidth()
+        return self.tilewidth
+    end
+
+    function map:getTileHeight()
+        return self.tileheight
+    end
+
     function map:getWidth()
         return self.width
     end
 
     function map:getHeight()
         return self.height
+    end
+
+    function map:getCollisions()
+        return map.collisions
     end
 
     function map:draw()

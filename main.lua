@@ -9,8 +9,8 @@ function love.load()
     world = wf.newWorld(0, 0)
     scale = 3.5
     fullscreen = false
-    _G.viviMap = loadTiledMap("viviMap")
-    map:load()
+    _G.currentMap = loadTiledMap("viviMap")
+    _G.currentMap:load()
     player:load()
     playerCamera:load()
     npcs:load()
@@ -20,7 +20,7 @@ function love.load()
 end
 
 function love.update(dt)
-    map:update(dt)
+    _G.currentMap:update(dt)
     world:update(dt)
     npcs:update(dt)
     player:update(dt)
@@ -83,7 +83,7 @@ end
 function love.draw()
     playerCamera:attach()
         love.graphics.scale(scale)
-        map:draw()
+        _G.currentMap:draw()
         npcs:draw()
         player:draw()
      -- world:draw()

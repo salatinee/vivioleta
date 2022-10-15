@@ -21,7 +21,7 @@ end
 
 function playerCamera:stopAtBorders()
     local w, h = love.graphics.getWidth(), love.graphics.getHeight()
-    local mapW, mapH = map.currentMap.width * map.currentMap.tilewidth * scale, map.currentMap.height * map.currentMap.tileheight * scale
+    local mapW, mapH = _G.currentMap:getWidth() * scale, _G.currentMap:getHeight() * scale
     if self.cam.x < w/2 then
         self.cam.x = w/2
     end

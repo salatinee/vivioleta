@@ -143,7 +143,7 @@ function NPC:checkCollision()
 end
 
 function NPC:update(dt)
-    -- generally this function is overriden for other drawing purposes besides character movement
+    -- generally this function is overriden for other updating purposes besides character movement
     self:updateNPC(dt)
 end
 

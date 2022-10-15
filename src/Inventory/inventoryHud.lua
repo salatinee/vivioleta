@@ -4,7 +4,7 @@ function inventoryHud:load()
     self.inventorySlot = {}
     self.scale = 0.55 * getVH()
     self.iconScale = self.scale * 0.75
-    self.inventorySlot.image = love.graphics.newImage("sprites/inventorySlot.png")
+    self.inventorySlot.image = love.graphics.newImage("assets/inventory/inventorySlot.png")
     self.inventorySlot.width = self.inventorySlot.image:getWidth() * self.scale 
     self.inventorySlot.height = self.inventorySlot.image:getHeight() * self.scale
     self.inventorySlot.padding = self.scale * 2

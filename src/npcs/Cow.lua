@@ -3,10 +3,10 @@ Cow = NPC:new()
 function Cow:new(x, y, limit)
     local width = 32
     local height = 18
-    local idleImage = love.graphics.newImage("sprites/npcs/Cow/Idle.png")
+    local idleImage = love.graphics.newImage("assets/npcs/Cow/idle.png")
     idleImage:setFilter("nearest", "nearest")
     local idleGrid = anim8.newGrid(width, height, idleImage:getWidth(), idleImage:getHeight())
-    local walkingImage = love.graphics.newImage("sprites/npcs/Cow/Walking.png")
+    local walkingImage = love.graphics.newImage("assets/npcs/Cow/Walking.png")
     walkingImage:setFilter("nearest", "nearest")
     local walkingGrid = anim8.newGrid(width, height, walkingImage:getWidth(), walkingImage:getHeight())
     local newCow = NPC:new()

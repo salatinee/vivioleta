@@ -5,8 +5,8 @@ local options = {
     itemWidth = 42,
     itemHeight = 27,
     value = 100,
-    icon = love.graphics.newImage("sprites/Items/Pickaxe.png"),
-    sprite = love.graphics.newImage("sprites/Items/pickaxeAnimation.png"),
+    icon = love.graphics.newImage("assets/items/Pickaxe.png"),
+    sprite = love.graphics.newImage("assets/items/pickaxeAnimation.png"),
     type = "tool",
     scale = 1,
 }

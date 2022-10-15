@@ -5,10 +5,10 @@ function Aurora:new(x, y, limit)
     local height = 48
     local scale = 0.67
     local speed = 30
-    local idleImage = love.graphics.newImage("sprites/npcs/Aurora/Idle.png")
+    local idleImage = love.graphics.newImage("assets/npcs/Aurora/idle.png")
     idleImage:setFilter("nearest", "nearest")
     local idleGrid = anim8.newGrid(width, height, idleImage:getWidth(), idleImage:getHeight())
-    local walkingImage = love.graphics.newImage("sprites/npcs/Aurora/Walking.png")
+    local walkingImage = love.graphics.newImage("assets/npcs/Aurora/walking.png")
     walkingImage:setFilter("nearest", "nearest")
     local walkingGrid = anim8.newGrid(width, height, walkingImage:getWidth(), walkingImage:getHeight())
     local newAurora = NPC:new()

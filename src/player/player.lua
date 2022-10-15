@@ -8,10 +8,10 @@ function player:load()
     self.scale = 0.33
     self.centeredX = self.x + self.width * self.scale / 2
     self.centeredY = self.y + self.height * self.scale / 2
-    local idle = love.graphics.newImage("sprites/newIdle.png")
-    local walking = love.graphics.newImage("sprites/newWalking.png")
-    local usingItem = love.graphics.newImage("sprites/usingItem.png")
-    local usingItem2 = love.graphics.newImage("sprites/usingItem2.png")
+    local idle = love.graphics.newImage("assets/vivi/idle.png")
+    local walking = love.graphics.newImage("assets/vivi/walking.png")
+    local usingItem = love.graphics.newImage("assets/vivi/usingItem.png")
+    local usingItem2 = love.graphics.newImage("assets/vivi/usingItem2.png")
     self.spriteSheets = {
         idle = {
             sprite = idle,

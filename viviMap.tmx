@@ -4,19 +4,19 @@
   <export target="viviMap.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="Grass" tilewidth="16" tileheight="16" tilecount="80" columns="10">
-  <image source="originalSprites/SproutLands/Tilesets/Grass.png" width="160" height="128"/>
+  <image source="assets/originalSprites/SproutLands/Tilesets/Grass.png" width="160" height="128"/>
  </tileset>
  <tileset firstgid="81" name="Hills" tilewidth="16" tileheight="16" tilecount="36" columns="6">
-  <image source="originalSprites/SproutLands/Tilesets/Hills.png" width="96" height="96"/>
+  <image source="assets/originalSprites/SproutLands/Tilesets/Hills.png" width="96" height="96"/>
  </tileset>
  <tileset firstgid="117" name="Fences" tilewidth="16" tileheight="16" tilecount="16" columns="4">
-  <image source="originalSprites/SproutLands/Tilesets/Fences.png" width="64" height="64"/>
+  <image source="assets/originalSprites/SproutLands/Tilesets/Fences.png" width="64" height="64"/>
  </tileset>
  <tileset firstgid="133" name="Tilled Dirt" tilewidth="16" tileheight="16" tilecount="64" columns="8">
-  <image source="originalSprites/SproutLands/Tilesets/Tilled Dirt.png" width="128" height="128"/>
+  <image source="assets/originalSprites/SproutLands/Tilesets/Tilled Dirt.png" width="128" height="128"/>
  </tileset>
  <tileset firstgid="197" name="Water" tilewidth="16" tileheight="16" tilecount="4" columns="4">
-  <image source="originalSprites/SproutLands/Tilesets/Water.png" width="64" height="16"/>
+  <image source="assets/originalSprites/SproutLands/Tilesets/Water.png" width="64" height="16"/>
   <tile id="0">
    <animation>
     <frame tileid="0" duration="150"/>

@@ -47,7 +47,7 @@ function NPC:load(options)
     self.lastDirection = directions[math.random(1, #directions)]
     self.collider = world:newRectangleCollider(options.x, options.y, options.width * options.scale, options.height * options.scale)
 
-    self.interactionFont = love.graphics.newFont("fonts/8bitOperatorPlus8-Regular.ttf", 64)
+    self.interactionFont = love.graphics.newFont("assets/fonts/8bitOperatorPlus8-Regular.ttf", 64)
     self.interactionFont:setFilter("nearest", "nearest")
     self.interactionTextScale = 0.125 -- 1/8
     self.interactionTimer = 0.0

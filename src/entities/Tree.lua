@@ -24,6 +24,6 @@ function Tree:draw()
 end
 
 function Tree:newCollider(x, y)
-    self.collider = world:newRectangleCollider(x, y, self.width, self.height)
+    self.collider = world:newRectangleCollider(x, y, _G.currentMap:getTileWidth(), _G.currentMap:getTileHeight())
     self.collider:setType("static")
 end

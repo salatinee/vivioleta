@@ -1,23 +1,29 @@
 function loadTiledMap(path)
     local map = require(path)
 
-    map.quads = loadQuads(map.tilesets)
-    map.images = loadImages(map.tilesets)
-    map.animatedTiles = loadAnimatedTiles(map.tilesets)
-    map.width = map.width * map.tilewidth
-    map.height = map.height * map.tileheight
-
-    map.frame = 0
-    map.timer = 0.0
-    map.maxTimer = 0.1
-
     function map:load()
-        
+
+        self.quads = loadQuads(self.tilesets)
+        self.images = loadImages(self.tilesets)
+        self.animatedTiles = loadAnimatedTiles(self.tilesets)
+        self.width = self.width * self.tilewidth
+        self.height = self.height * self.tileheight
+        self.name = self.properties.name
+        self.frame = 0
+        self.timer = 0.0
+        self.maxTimer = 0.1
+        for i, tiledmap in ipairs(tiledmaps) do
+            if self.name == tiledmap then
+                self.index = i
+                break
+            end
+        end
         self.collisions = {}
         self.npcCollisionClass = world:addCollisionClass("NPC")
         self.collisionClass = world:addCollisionClass("Collision")
+        self.treeClass = world:addCollisionClass("Tree")
         self.playerCollisionClass = world:addCollisionClass("Player")
-        self.playerInteractionClass = world:addCollisionClass("PlayerInteraction", {ignores = {"NPC", "Player", "Collision"}})
+        self.playerInteractionClass = world:addCollisionClass("PlayerInteraction", {ignores = {"All",}})
         for _, layer in ipairs(self.layers) do
             if layer.name == "Collisions" then
                 for _, obj in pairs(layer.objects) do
@@ -34,6 +40,7 @@ function loadTiledMap(path)
                     tree:setPosition(obj.x, obj.y)
                     tree:newCollider(obj.x, obj.y)
                     entities:addEntity(tree)
+                    table.insert(self.collisions, tree)
                 end
             end
         end
@@ -64,8 +71,12 @@ function loadTiledMap(path)
         return self.height
     end
 
+    function map:getIndex()
+        return self.index
+    end
+
     function map:getCollisions()
-        return map.collisions
+        return self.collisions
     end
 
     function map:draw()

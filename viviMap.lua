@@ -10,7 +10,9 @@ return {
   tileheight = 16,
   nextlayerid = 8,
   nextobjectid = 67,
-  properties = {},
+  properties = {
+    name = "viviMap"
+  },
   tilesets = {
     {
       name = "Grass",

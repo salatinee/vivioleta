@@ -1,7 +1,9 @@
 Entity = {}
 
 function Entity:new()
-    local newEntity = {}
+    local newEntity = {
+        animating = false,
+    }
     setmetatable(newEntity, self)
     self.__index = self
     return newEntity

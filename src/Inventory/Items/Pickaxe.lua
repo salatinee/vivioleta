@@ -8,7 +8,7 @@ local defaultOptions = {
     icon = love.graphics.newImage("assets/items/Pickaxe.png"),
     sprite = love.graphics.newImage("assets/items/pickaxeAnimation.png"),
     type = "tool",
-    scale = 1,
+    scale = player:getScale(),
 }
 
 Pickaxe = {}
@@ -27,7 +27,7 @@ function Pickaxe:load()
         right = anim8.newAnimation(self.grid('1-2', 3), self.animationMaxFrameTimer),
         left = anim8.newAnimation(self.grid('1-2', 4), self.animationMaxFrameTimer)
     }
-
+    self.x, self.y = player:getPosition()
     self.lastDirection = player:getLastDirection()
     self.currentAnimation = self.animations[self.lastDirection]
 end
@@ -61,15 +61,29 @@ function Pickaxe:update(dt)
     self.currentAnimation = self.animations[self.lastDirection]
 end
 
+function Pickaxe:updatePosition()
+    local playerScale = player:getScale()
+    local playerX, playerY = player:getPosition()
+    local playerSprite = player:getCurrentSpriteSheet()
+    local playerWidth, playerHeight = player:getDimensions()
+    local differenceX = ((self.sprite:getWidth() / 2 - playerHeight) * playerScale) / 2 - 1
+    self.x = playerX - self.itemWidth * playerScale / 2 - differenceX
+    self.y = playerY
+end
+
 function Pickaxe:draw()
     if self.animating then
         local playerScale = player:getScale()
-        local playerX, playerY = player:getPosition()
-        local playerSprite = player:getCurrentSpriteSheet()
-        local playerWidth, playerHeight = player:getDimensions()
-        local differenceX = ((self.sprite:getWidth() / 2 - playerHeight) * playerScale) / 2 - 1
-        self.x = playerX - self.itemWidth * playerScale / 2 - differenceX
-        self.y = playerY
+        self:updatePosition()
         self.currentAnimation:draw(self.sprite, self.x, self.y, self.rotation, playerScale)
+    end
+end
+
+function Pickaxe:use()
+    self.animating = true
+    self:updatePosition()
+    local colliders = world:queryRectangleArea(self.x, self.y, self.itemWidth, self.itemHeight, {"Tree"})
+    if #colliders > 0 then
+        local tree = colliders[1]:getObject()
     end
 end

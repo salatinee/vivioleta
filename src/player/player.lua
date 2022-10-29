@@ -89,6 +89,7 @@ end
 function player:update(dt)
     self:animate(dt)
     self:updateCollider()
+    self:checkBoundaries()
     if self.usingItem then
         self.usingItemTimer = self.usingItemTimer + dt
         if self.usingItemTimer >= self.usingItemMaxTimer then
@@ -202,6 +203,14 @@ function player:getPosition()
     return self.x, self.y
 end
 
+function player:setPosition(x, y)
+    x = x or self.x + self.width * self.scale / 2
+    y = y or self.y + self.height * self.scale / 2
+    self.collider:setPosition(x, y)
+    self.interactionCollider:setPosition(x, y)
+end
+
+
 function player:getDimensions()
     return self.width, self.height
 end
@@ -210,6 +219,38 @@ function player:interactWithNPC()
     local npc = self:checkInteractionWithNPC()
     if npc ~= nil then
         npc:setIsInteracting(true)
+    end
+end
+
+
+function player:checkBoundaries()
+
+    local mapWidth, mapHeight = _G.currentMap:getDimensions()
+    local direction = nil
+
+    local x, y = self:getCenteredPosition()
+    local offsetX = 5 * scale
+    local width, height = self.width * self.scale, self.height * self.scale
+    if x < width / 2 then
+        self:setPosition(mapWidth - width / 2 - offsetX, nil)
+        direction = "left"
+
+    elseif x > (mapWidth - width) then
+        self:setPosition(width / 2 + offsetX, nil) 
+        direction = "right"
+
+    elseif y < height / 2 then
+        self:setPosition(nil, mapHeight - height / 2)
+        direction = "up"
+
+    elseif y > (mapHeight - height / 2) then
+        self:setPosition(nil, height / 2)
+        direction = "down"
+    end
+
+    if direction then
+        playerCamera:resetPosition()
+        changeCurrentMap(direction)
     end
 end
 

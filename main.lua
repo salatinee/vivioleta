@@ -9,6 +9,8 @@ function love.load()
     world = wf.newWorld(0, 0)
     scale = 3.5
     fullscreen = false
+    loadMapOfMaps()
+    _G.alpha = 1
     _G.currentMap = loadTiledMap("viviMap")
     _G.currentMap:load()
     player:load()
@@ -20,12 +22,14 @@ function love.load()
 end
 
 function love.update(dt)
-    _G.currentMap:update(dt)
-    world:update(dt)
-    entities:update(dt)
-    player:update(dt)
-    playerCamera:update(dt)
-    inventoryHud:update(dt)
+    if not loading:update(dt) then
+        _G.currentMap:update(dt)
+        world:update(dt)
+        entities:update(dt)
+        player:update(dt)
+        playerCamera:update(dt)
+        inventoryHud:update(dt)
+    end
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
@@ -81,6 +85,7 @@ function love.keypressed(key, scancode, isrepeat)
 end
 
 function love.draw()
+    love.graphics.setColor(1, 1, 1, _G.alpha)
     playerCamera:attach()
         love.graphics.scale(scale)
         _G.currentMap:draw()

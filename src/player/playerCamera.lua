@@ -3,11 +3,30 @@ playerCamera = {}
 function playerCamera:load()
     self.cam = camera(player:getPositionScaled())
     self.cam.smoother = camera.smooth.damped(6)
+    self.timer = 0
+    self.maxTimer = 0.25
+    self.reseting = false
 end
 
 function playerCamera:update(dt)
     self:lookAtPlayer()
     self:stopAtBorders()
+    if self.reseting then
+        self.timer = self.timer + dt
+        if self.timer > self.maxTimer then
+            self.reseting = false
+            self.timer = 0
+            self.cam.smoother = camera.smooth.damped(6)
+        end
+    end
+end
+
+function playerCamera:resetPosition()
+    if not self.reseting then
+        self.reseting = true
+        self.cam.smoother = camera.smooth.damped(0)
+        self.cam = camera(player:getPositionScaled())
+    end
 end
 
 function playerCamera:lookAtPlayer()

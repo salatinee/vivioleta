@@ -12,38 +12,24 @@ function loadTiledMap(path)
         self.frame = 0
         self.timer = 0.0
         self.maxTimer = 0.1
+
         for i, tiledmap in ipairs(tiledmaps) do
-            if self.name == tiledmap then
+            if self.properties.name == tiledmap.name then
                 self.index = i
                 break
             end
         end
-        self.collisions = {}
-        self.npcCollisionClass = world:addCollisionClass("NPC")
-        self.collisionClass = world:addCollisionClass("Collision")
-        self.treeClass = world:addCollisionClass("Tree")
-        self.playerCollisionClass = world:addCollisionClass("Player")
-        self.playerInteractionClass = world:addCollisionClass("PlayerInteraction", {ignores = {"All",}})
-        for _, layer in ipairs(self.layers) do
-            if layer.name == "Collisions" then
-                for _, obj in pairs(layer.objects) do
-                    local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
-                    collider:setType("static")
-                    table.insert(self.collisions, collider)
-                    collider:setCollisionClass("Collision")
-                end
-            end
 
-            if layer.name == "Trees" then
-                for _, obj in pairs(layer.objects) do
-                    local tree = Tree:new()
-                    tree:setPosition(obj.x, obj.y)
-                    tree:newCollider(obj.x, obj.y)
-                    entities:addEntity(tree)
-                    table.insert(self.collisions, tree)
-                end
-            end
+        self.collisions = {}
+        if not world:isCollisionClass("NPC") then
+            world:addCollisionClass("NPC")
+            world:addCollisionClass("Collision")
+            world:addCollisionClass("Tree")
+            world:addCollisionClass("Player")
+            world:addCollisionClass("PlayerInteraction", {ignores = {"All",}})
         end
+
+        self:loadCollisions()
     end
 
     function map:update(dt)
@@ -71,12 +57,48 @@ function loadTiledMap(path)
         return self.height
     end
 
+    function map:getDimensions()
+        return self:getWidth(), self:getHeight()
+    end
+
     function map:getIndex()
         return self.index
     end
 
     function map:getCollisions()
         return self.collisions
+    end
+
+    function map:destroy()
+        for i, collision in ipairs(self.collisions) do
+            if collision ~= nil then
+                collision:destroy()
+                table.remove(self.collisions, i)
+            end    
+        end
+    end
+
+    function map:loadCollisions()
+        for _, layer in ipairs(self.layers) do
+            if layer.name == "Collisions" then
+                for _, obj in pairs(layer.objects) do
+                    local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
+                    collider:setType("static")
+                    table.insert(self.collisions, collider)
+                    collider:setCollisionClass("Collision")
+                end
+            end
+
+            if layer.name == "Trees" then
+                for _, obj in pairs(layer.objects) do
+                    local tree = Tree:new()
+                    tree:setPosition(obj.x, obj.y)
+                    tree:newCollider(obj.x, obj.y)
+                    entities:addEntity(tree)
+                    table.insert(self.collisions, tree)
+                end
+            end
+        end
     end
 
     function map:draw()

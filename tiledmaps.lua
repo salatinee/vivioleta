@@ -1,8 +1,8 @@
 function loadMapOfMaps()
     tiledmaps = {
-        {map = nil, name = nil},              {map = nil, name = nil},             {map = nil, name = nil},
+        {map = nil, name = nil},          {map = nil, name = nil},           {map = nil, name = nil},
         {map = nil, name = "viviMap2"},   {map = nil, name = "viviMap"},     {map = nil, name = nil},
-        {map = nil, name = nil},          {map = nil, name = nil},             {map = nil, name = nil},
+        {map = nil, name = nil},          {map = nil, name = nil},           {map = nil, name = nil},
     }
 end
 

@@ -1,9 +1,8 @@
-
 function loadMapOfMaps()
     tiledmaps = {
-        {map = nil, name = "nil"},        {map = nil, name = "nil"},         {map = nil, name = "nil"},
-        {map = nil, name = "viviMap2"},   {map = nil, name = "viviMap"},     {map = nil, name = "nil"},
-        {map = nil, name = "nil"},        {map = nil, name = "nil"},         {map = nil, name = "nil"},
+        {map = nil, name = nil},              {map = nil, name = nil},             {map = nil, name = nil},
+        {map = nil, name = "viviMap2"},   {map = nil, name = "viviMap"},     {map = nil, name = nil},
+        {map = nil, name = nil},          {map = nil, name = nil},             {map = nil, name = nil},
     }
 end
 
@@ -25,19 +24,18 @@ function changeCurrentMap(direction)
 
         local newCurrentMap = tiledmaps[i]
         if newCurrentMap.name ~= nil then
-            _G.currentMap:destroy()
+            _G.currentMap:reset()
+            player:reset()
+            player:resetPosition(direction)
             if newCurrentMap.map ~= nil then
                 _G.currentMap = newCurrentMap.map
                 _G.currentMap:loadCollisions()
-            else
-                if newCurrentMap.name ~= "nil" then
-                    _G.currentMap = loadTiledMap(newCurrentMap.name)
-                    tiledmaps[i].map = _G.currentMap
-                    _G.currentMap:load()
-                end
+            elseif newCurrentMap.name ~= "nil" then
+                _G.currentMap = loadTiledMap(newCurrentMap.name)
+                tiledmaps[i].map = _G.currentMap
+                _G.currentMap:load()
             end
         loading:animate()
         end
     end
 end
-

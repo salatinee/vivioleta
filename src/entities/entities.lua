@@ -3,12 +3,9 @@ entities = {}
 entities.entities = {}
 
 function entities:load()
-    -- hardcoded test
-    table.insert(self.entities, Cow:new(100, 100, 50))
-    table.insert(self.entities, Aurora:new(200, 200, 50))
-
-    for _, entity in ipairs(self.entities) do
-        entity:load(entity.options or nil)
+    self.allEntities = {Cow, Aurora, Tree}
+    for _, entity in ipairs(self.allEntities) do
+        entity:load()
     end
 end
 
@@ -18,16 +15,28 @@ function entities:update(dt)
     end
 end
 
+function entities:reset()
+    self.entities = {}
+end
+
 function entities:getEntities()
     return self.entities
+end
+
+function entities:getEntityByName(name)
+    for _, entity in ipairs(self.allEntities) do
+        if entity.name == name then
+            return entity
+        end
+    end
 end
 
 function entities:addEntity(newEntity)
     table.insert(self.entities, newEntity)
 end
 
-function entities:removeEntity(entity)
-    table.remove(self.entities, entity)
+function entities:removeEntity(i)
+    table.remove(self.entities, i)
 end
 
 function entities:draw()

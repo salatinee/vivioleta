@@ -2,73 +2,39 @@ NPC = {}
 setmetatable(NPC, { __index = Entity })
 
 function NPC:new()
-    local newNPC = Entity:new()
+    local newNPC = Entity:new() 
     self.__index = self
     setmetatable(newNPC, self)
     return newNPC
 end
 
-function NPC:load(options)
-    options.scale = options.scale or 1
-    self.name = options.name
-    self.x = options.x
-    self.y = options.y
-    self.scale = options.scale
-    self.originalPosition = {x = options.x, y = options.y}
-    self.width = options.width
-    self.height = options.height
-    self.spriteSheets = {
-        idle = {
-            sprite = options.idle.image,
-            grid = options.idle.grid
-        },
-        walking = {
-            sprite = options.walking.image,
-            grid = options.walking.grid
-        }
+function NPC:newNPC(x, y)
+    self.x = x
+    self.y = y
+    self.originalPosition = {
+        x = x,
+        y = y,
     }
+    self.collider = world:newRectangleCollider(x, y, self.width * self.scale, self.height * self.scale)
+    self.collider:setFixedRotation(true)
+    self.collider:setCollisionClass("NPC")
+    self.collider:setObject(self)
+end
 
-    self.animations = {
-        idle = {
-            front = options.animations.idle.front,
-            back = options.animations.idle.back,
-            right = options.animations.idle.right,
-            left = options.animations.idle.left,
-        },
-
-        walking = {
-            front = options.animations.walking.front,
-            back = options.animations.walking.back,
-            right = options.animations.walking.right,
-            left = options.animations.walking.left,
-        }
-    }
-
+function NPC:loadNPC()
     local directions = {"front", "back", "left", "right"}
     self.lastDirection = directions[math.random(1, #directions)]
-    self.collider = world:newRectangleCollider(options.x, options.y, options.width * options.scale, options.height * options.scale)
-
+    self.timer = 0
+    self.maxTimer = math.random(0, 5) + math.random()
     self.interactionFont = love.graphics.newFont("assets/fonts/8bitOperatorPlus8-Regular.ttf", 64)
     self.interactionFont:setFilter("nearest", "nearest")
     self.interactionTextScale = 0.125 -- 1/8
     self.interactionTimer = 0.0
     self.interactionMaxTimer = 1
     self.isInteracting = false
-
-    -- NPC's limitation from going too far from its original position
-    self.limits = {
-        up = options.limits.up or options.height / 2,
-        down = options.limits.down or _G.viviMap:getHeight() - options.height / 2,
-        left = options.limits.left or options.width / 2,
-        right = options.limits.right or _G.viviMap:getWidth() - options.width / 2,
-    }
     
-    self.collider:setFixedRotation(true)
-    self.collider:setCollisionClass("NPC")
-    self.collider:setObject(self)
     self.currentAnimation = self.animations.idle[self.lastDirection]
     self.currentSpriteSheet = self.spriteSheets.idle.sprite
-    self.speed = options.speed or 50
 
     self.timer = 0.0
     local falseTrue = {false, true}
@@ -76,33 +42,11 @@ function NPC:load(options)
     self.maxTimer = math.random(0, 5) + math.random()
 end
 
-function NPC.createOptions(name, scale, x, y, width, height, speed, idleImage, idleGrid, walkingImage, walkingGrid, limit)
-    local options = {}
-    options.name = name
-    options.scale = scale
-    options.x = x
-    options.y = y
-    options.speed = speed or 25
-    options.width = width
-    options.height = height
-    options.idle = {
-        image = idleImage,
-        grid = idleGrid
-    }
-
-    options.walking = {
-        image = walkingImage,
-        grid = walkingGrid
-    }
-
-    options.limits = {
-        up = limit,
-        down = limit,
-        right = limit,
-        left = limit
-    }
-
-    return options
+function NPC:newCollider()
+    self.collider = world:newRectangleCollider(self.x, self.y, self.width * self.scale, self.height * self.scale)
+    self.collider:setFixedRotation(true)
+    self.collider:setCollisionClass("NPC")
+    self.collider:setObject(self)
 end
 
 function NPC:getObject(name)

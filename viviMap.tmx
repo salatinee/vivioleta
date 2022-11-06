@@ -289,12 +289,11 @@
   <object id="28" x="32" y="32" width="160" height="1"/>
   <object id="78" x="75" y="74.875" width="73.875" height="43.125"/>
  </objectgroup>
- <group id="14" name="Group 2"/>
- <objectgroup id="7" name="Trees">
-  <object id="65" x="80" y="352" width="16" height="16"/>
-  <object id="66" x="208" y="352" width="16" height="16"/>
- </objectgroup>
  <group id="11" name="Spawn">
+  <objectgroup id="7" name="Tree">
+   <object id="65" x="80" y="352" width="16" height="16"/>
+   <object id="66" x="208" y="352" width="16" height="16"/>
+  </objectgroup>
   <objectgroup id="13" name="Aurora">
    <object id="70" x="208" y="208" width="16" height="16"/>
   </objectgroup>

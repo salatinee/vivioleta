@@ -27,6 +27,7 @@ function loadTiledMap(path)
             world:addCollisionClass("Tree")
             world:addCollisionClass("Player")
             world:addCollisionClass("PlayerInteraction", {ignores = {"All",}})
+            entities:load()
         end
 
         self:loadCollisions()
@@ -69,19 +70,22 @@ function loadTiledMap(path)
         return self.collisions
     end
 
-    function map:destroy()
-        for i, collision in ipairs(self.collisions) do
-            if collision ~= nil then
-                collision:destroy()
-                table.remove(self.collisions, i)
-            end    
-        end
+    function map:reset()
+        world:destroy()
+        world = wf.newWorld(0, 0)
+        world:addCollisionClass("NPC")
+        world:addCollisionClass("Collision")
+        world:addCollisionClass("Tree")
+        world:addCollisionClass("Player")
+        world:addCollisionClass("PlayerInteraction", {ignores = {"All",}})
+        entities:reset()
+        player:reset()
     end
 
     function map:loadCollisions()
         for _, layer in ipairs(self.layers) do
             if layer.name == "Collisions" then
-                for _, obj in pairs(layer.objects) do
+                for _, obj in ipairs(layer.objects) do
                     local collider = world:newRectangleCollider(obj.x, obj.y, obj.width, obj.height)
                     collider:setType("static")
                     table.insert(self.collisions, collider)
@@ -89,13 +93,18 @@ function loadTiledMap(path)
                 end
             end
 
-            if layer.name == "Trees" then
-                for _, obj in pairs(layer.objects) do
-                    local tree = Tree:new()
-                    tree:setPosition(obj.x, obj.y)
-                    tree:newCollider(obj.x, obj.y)
-                    entities:addEntity(tree)
-                    table.insert(self.collisions, tree)
+            if layer.name == "Spawn" then -- layergroup
+                for _, subLayer in ipairs(layer.layers) do
+                    for _, obj in ipairs(subLayer.objects) do
+                        local entity = entities:getEntityByName(subLayer.name)
+                        local newEntity = entity:new(obj.x, obj.y)
+                        entities:addEntity(newEntity)
+
+                        if subLayer.name == "Tree" then
+                            local collider = newEntity:newCollider(obj.x, obj.y)
+                            table.insert(self.collisions, collider)
+                        end
+                    end
                 end
             end
         end

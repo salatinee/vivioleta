@@ -69,14 +69,10 @@ function player:load()
         width = 10,
         height = 10
     }
-    self.interactionCollider = world:newRectangleCollider(self.x + self.width * self.scale / 2, self.y + self.height * self.scale / 2 + self.interaction.height * 5/3, self.interaction.width, self.interaction.height)
-    self.interactionCollider:setCollisionClass("PlayerInteraction")
+    self:newCollider()
     self.currentAnimation = self.animations.idle.front
     self.currentSpriteSheet = self.spriteSheets.idle.sprite
     self.speed = 75
-    self.collider = world:newRectangleCollider(self.x, self.y, self.width * self.scale, self.height * self.scale)
-    self.collider:setFixedRotation(true)
-    self.collider:setCollisionClass("Player")
     self.usingItem = false
     self.usingItemTimer = 0.0
     self.usingItemMaxTimer = self.animations.usingItem.front.totalDuration
@@ -222,6 +218,33 @@ function player:interactWithNPC()
     end
 end
 
+function player:calculateBoundaryPosition(direction)
+    local position = {
+        x = nil,
+        y = nil
+    }
+
+    local mapWidth, mapHeight = _G.currentMap:getDimensions()
+    local width, height = self.width * self.scale, self.height * self.scale
+    local offsetX = 5 * scale
+
+    if direction == "up" then
+        position.x, position.y = nil, mapHeight - height / 2
+    elseif direction == "down" then
+        position.x, position.y = nil, height / 2
+    elseif direction == "left" then
+        position.x, position.y = mapWidth - width / 2 - offsetX, nil
+    elseif direction == "right" then
+        position.x, position.y = width / 2 + offsetX, nil
+    end
+
+    return position
+end
+
+function player:resetPosition(direction)
+    local position = self:calculateBoundaryPosition(direction)
+    self:setPosition(position.x, position.y)
+end
 
 function player:checkBoundaries()
 
@@ -232,20 +255,17 @@ function player:checkBoundaries()
     local offsetX = 5 * scale
     local width, height = self.width * self.scale, self.height * self.scale
     if x < width / 2 then
-        self:setPosition(mapWidth - width / 2 - offsetX, nil)
         direction = "left"
-
+        self:setPosition(width / 2, nil)
     elseif x > (mapWidth - width) then
-        self:setPosition(width / 2 + offsetX, nil) 
         direction = "right"
-
+        self:setPosition(mapWidth - width, nil)
     elseif y < height / 2 then
-        self:setPosition(nil, mapHeight - height / 2)
         direction = "up"
-
-    elseif y > (mapHeight - height / 2) then
         self:setPosition(nil, height / 2)
+    elseif y > (mapHeight - height / 2) then
         direction = "down"
+        self:setPosition(nil, mapHeight - height / 2)
     end
 
     if direction then
@@ -261,6 +281,17 @@ function player:updateCollider()
     self.centeredY = self.y + self.height * self.scale / 2
 end
 
+function player:reset()
+    self:newCollider()
+end
+
+function player:newCollider()
+    self.interactionCollider = world:newRectangleCollider(self.x + self.width * self.scale / 2, self.y + self.height * self.scale / 2 + self.interaction.height * 5/3, self.interaction.width, self.interaction.height)
+    self.interactionCollider:setCollisionClass("PlayerInteraction")
+    self.collider = world:newRectangleCollider(self.x, self.y, self.width * self.scale, self.height * self.scale)
+    self.collider:setFixedRotation(true)
+    self.collider:setCollisionClass("Player")
+end
 
 function player:getScale()
     return self.scale

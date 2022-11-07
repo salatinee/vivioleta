@@ -1,7 +1,8 @@
 Items = {}
 
 function Items:load()
-    for _, item in ipairs(Inventory:getItems()) do
+    self.allItems = {Pickaxe, WateringCan}
+    for _, item in ipairs(self.allItems) do
         item:load()
     end
 end

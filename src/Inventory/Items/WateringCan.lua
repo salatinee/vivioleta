@@ -1,19 +1,17 @@
-Pickaxe = {}
+WateringCan = {}
 
-setmetatable(Pickaxe, { __index = Item })
+setmetatable(WateringCan, {__index = Item})
 
-function Pickaxe:load()
-    self.name = "Pickaxe"
+function WateringCan:load()
+    self.name = "WateringCan"
     self.width = 116
     self.height = 92
     self.itemWidth = 42
-    self.itemHeight = 27
+    self.itemHeight = 24 
     self.value = 100
-    self.icon = love.graphics.newImage("assets/items/Pickaxe.png")
-    self.sprite = love.graphics.newImage("assets/items/pickaxeAnimation.png")
+    self.icon = love.graphics.newImage("assets/items/WateringCan.png")
+    self.sprite = love.graphics.newImage("assets/items/wateringCanAnimation.png")
     self.type = "tool"
-    self.scale = player:getScale()
-
     self.options = {
         name = self.name,
         width = self.width,
@@ -25,6 +23,8 @@ function Pickaxe:load()
         type = self.type,
         scale = self.scale,
     }
+
+    self.iconScale = 1.5
     self.grid = anim8.newGrid(self.width, self.height, self.sprite:getWidth(), self.sprite:getHeight())
     self.animationFrames = 2
     self.animationTimer = 0
@@ -41,23 +41,22 @@ function Pickaxe:load()
     self.currentAnimation = self.animations[self.lastDirection]
 end
 
-
-function Pickaxe:new()
-    local newPickaxe = Item:new(self.options)
+function WateringCan:new()
+    local newWateringCan = Item:new(self.options)
+    
+    newWateringCan.iconOffset = {
+        x = -3,
+        y = 0
+    }
     self.__index = self
-    setmetatable(newPickaxe, self)
-    return newPickaxe
+    setmetatable(newWateringCan, self)
+    return newWateringCan
 end
 
-function Pickaxe:update(dt)
+function WateringCan:update(dt)
     self:updateItem(dt)
 end
 
-function Pickaxe:use()
+function WateringCan:use()
     self.animating = true
-    self:updatePosition()
-    local colliders = world:queryRectangleArea(self.x, self.y, self.itemWidth, self.itemHeight, {"Tree"})
-    if #colliders > 0 then
-        local tree = colliders[1]:getObject()
-    end
 end

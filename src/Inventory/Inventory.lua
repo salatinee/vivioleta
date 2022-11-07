@@ -12,6 +12,7 @@ function Inventory:load()
     end
 
     self.items[1] = Pickaxe:new()
+    self.items[2] = WateringCan:new()
 
     self.itemsCount = #self.items
 end

@@ -15,9 +15,9 @@ function love.load()
     _G.currentMap:load()
     player:load()
     playerCamera:load()
+    Items:load()
     Inventory:load()
     inventoryHud:load()
-    Items:load()
 end
 
 function love.update(dt)

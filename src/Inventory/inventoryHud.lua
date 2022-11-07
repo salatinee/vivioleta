@@ -85,9 +85,11 @@ function inventoryHud:draw()
             local item = Inventory:getItem(i)
             if item ~= nil then
                 if not item:getBeingDragged() then
+                    local itemIconScale = item:getIconScale() or 1
+                    local iconOffsetX, iconOffsetY = item:getIconOffset()
                    item:setIconDimensions(
-                   self.inventorySlots[i].x - self.inventorySlot.width / 2 + item.icon:getWidth() * self.iconScale / 2 + self.inventorySlot.padding + 1,
-                   self.inventorySlots[i].y - self.inventorySlot.height / 2 + item.icon:getHeight() * self.iconScale / 2 + self.inventorySlot.padding + 1
+                   self.inventorySlots[i].x - self.inventorySlot.width / 2 + item.icon:getWidth()  * self.iconScale / itemIconScale / 2 + self.inventorySlot.padding + 1 + iconOffsetX,
+                   self.inventorySlots[i].y - self.inventorySlot.height / 2 + item.icon:getHeight() * self.iconScale / itemIconScale / 2 + self.inventorySlot.padding + 1 + iconOffsetY
                 )
                 end
 

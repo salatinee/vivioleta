@@ -18,5 +18,6 @@ function requireAll()
     require("src/Inventory/Items")
     require("src/Inventory/inventoryHud")
     require("src/Inventory/Items/Pickaxe")
+    require("src/Inventory/Items/WateringCan")
     require("utils")
 end

@@ -45,7 +45,7 @@ function WateringCan:new()
     local newWateringCan = Item:new(self.options)
     
     newWateringCan.iconOffset = {
-        x = -3,
+        x = -self.iconScale * 2,
         y = 0
     }
     self.__index = self
